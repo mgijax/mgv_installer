@@ -18,11 +18,11 @@ export NO_CLONE="true"
 # mgv-data
 #
 # install dir
-export MGV_DATA_DIR="${INSTALL_DIR}/mgv-data"
+export MGV_DATA_DIR="${INSTALL_DIR}/mgv_data"
 # data area. has subdirs for downloads and output
-export MGV_DATA_DROOT="${DATALOADSOUTPUT}/mgi/mgv-data"
+export MGV_DATA_DROOT="${DATALOADSOUTPUT}/mgi/mgv_data"
 # name of soft link to output directory.
-export MGV_DATA_LINK="${INSTALL_DIR}/mgv-web-data"
+export MGV_DATA_LINK="${INSTALL_DIR}/mgv_web_data"
 
 #---------------------------------------
 # mgv parameters
