@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [ "${MGICONFIG}" = "" ]
+then
+    MGICONFIG=/usr/local/mgi/live/mgiconfig
+    export MGICONFIG
+fi
+. ${MGICONFIG}/master.config.sh
+
+#export INSTALL_DIR="${MGI_LIVE}"
+export INSTALL_DIR="."
+
+#---------------------------------------
+# mgv-data parameters
+# where the product is installed
+export MGV_DATA_DIR="${INSTALL_DIR}/mgv-data"
+# 
+export MGV_DATA_DROOT="${DATALOADSOUTPUT}/mgi/mgv-data"
+# where it downloads to
+export MGV_DATA_DDIR="${MGV_DATA_DROOT}/downloads"
+# where it writes the output
+export MGV_DATA_ODIR="${MGV_DATA_DROOT}/output"
+# name of soft link to output directory.
+export MGV_DATA_LINK="${INSTALL_DIR}/mgv-data-web"
+
+#---------------------------------------
+# mgv parameters
+#
+# where it's installed
+export MGV_DIR="${INSTALL_DIR}/mgv"

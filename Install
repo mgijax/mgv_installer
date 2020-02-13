@@ -1,0 +1,19 @@
+#!/bin/bash
+
+cd `dirname $0`
+. Configuration
+
+mkdir -p "${MGV_DATA_DDIR}"
+mkdir -p "${MGV_DATA_ODIR}"
+
+rm -f "${MGV_DATA_LINK}"
+ln -s "${MGV_DATA_ODIR}" "${MGV_DATA_LINK}"
+
+#
+git clone git@github.com:mgijax/mgv-data.git "${MGV_DATA_DIR}"
+git clone git@github.com:mgijax/mgv.git "${MGV_DIR}"
+#
+# Edit the config file for mgv-data to output to the standard MGI data location
+sed -i "s@^export DIR=.*@export DIR=\"${MGV_DATA_DROOT}\"@" "${MGV_DATA_DIR}/bin/config.sh"
+sed -i "s@^export DIR=.*@export DIR=\"${MGV_DATA_DROOT}\"@" "${MGV_DATA_DIR}/bin/config.sh"
+
