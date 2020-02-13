@@ -28,3 +28,5 @@ ln -s "${MGV_DATA_DROOT}/output" "${MGV_DATA_LINK}"
 # A bit hackey. 
 sed -i "s@^export DIR=.*@export DIR=\"${MGV_DATA_DROOT}\"@" "${MGV_DATA_DIR}/bin/config.sh"
 
+# Run the deployment script to copy the cgi and make it executable
+cd ${MGV_DATA_DIR}/bin; ./deploy.sh
