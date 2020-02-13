@@ -7,10 +7,11 @@ then
 fi
 . ${MGICONFIG}/master.config.sh
 
-# parent directory where products are installed
+# Parent directory where products are installed.
+# Change this for development.
 export INSTALL_DIR="${MGI_LIVE}"
 
-# if "true", do not git clone the products. Assume they're already in place.
+# If "true", do not git clone the products. Assume they're already in place.
 export NO_CLONE="true"
 
 #---------------------------------------
@@ -20,9 +21,8 @@ export NO_CLONE="true"
 export MGV_DATA_DIR="${INSTALL_DIR}/mgv-data"
 # data area. has subdirs for downloads and output
 export MGV_DATA_DROOT="${DATALOADSOUTPUT}/mgi/mgv-data"
-
 # name of soft link to output directory.
-export MGV_DATA_LINK="${INSTALL_DIR}/mgv-data-web"
+export MGV_DATA_LINK="${INSTALL_DIR}/mgv-web-data"
 
 #---------------------------------------
 # mgv parameters

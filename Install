@@ -3,14 +3,6 @@
 cd `dirname $0`
 . Configuration
 
-# create the output areas
-mkdir -p "${MGV_DATA_DROOT}/downloads"
-mkdir -p "${MGV_DATA_DROOT}/output"
-
-# create soft link from live area to data output area
-rm -f "${MGV_DATA_LINK}"
-ln -s "${MGV_DATA_DROOT}/output" "${MGV_DATA_LINK}"
-
 # clone the repos
 if [ ${NO_CLONE} != "true" ] ; then
     if [ ! -e "${MGV_DATA_DIR}" ] ; then
@@ -24,7 +16,14 @@ if [ ${NO_CLONE} != "true" ] ; then
     fi
 fi
 
-#
+# create the output areas for mgv-data if needed
+mkdir -p "${MGV_DATA_DROOT}/downloads"
+mkdir -p "${MGV_DATA_DROOT}/output"
+
+# create soft link from live area to data output area
+rm -f "${MGV_DATA_LINK}"
+ln -s "${MGV_DATA_DROOT}/output" "${MGV_DATA_LINK}"
+
 # Edit the config file for mgv-data to output to the standard MGI data location
 # A bit hackey. 
 sed -i "s@^export DIR=.*@export DIR=\"${MGV_DATA_DROOT}\"@" "${MGV_DATA_DIR}/bin/config.sh"
