@@ -3,17 +3,29 @@
 cd `dirname $0`
 . Configuration
 
-mkdir -p "${MGV_DATA_DDIR}"
-mkdir -p "${MGV_DATA_ODIR}"
+# create the output areas
+mkdir -p "${MGV_DATA_DROOT}/downloads"
+mkdir -p "${MGV_DATA_DROOT}/output"
 
+# create soft link from live area to data output area
 rm -f "${MGV_DATA_LINK}"
-ln -s "${MGV_DATA_ODIR}" "${MGV_DATA_LINK}"
+ln -s "${MGV_DATA_DROOT}/output" "${MGV_DATA_LINK}"
 
-#
-git clone git@github.com:mgijax/mgv-data.git "${MGV_DATA_DIR}"
-git clone git@github.com:mgijax/mgv.git "${MGV_DIR}"
+# clone the repos
+if [ ${NO_CLONE} != "true" ] ; then
+    if [ ! -e "${MGV_DATA_DIR}" ] ; then
+        # clone mgv-data
+        git clone git@github.com:mgijax/mgv-data.git "${MGV_DATA_DIR}"
+    fi
+
+    if [ ! -e "${MGV_DIR}" ] ; then
+        # clone mgv
+        git clone git@github.com:mgijax/mgv.git "${MGV_DIR}"
+    fi
+fi
+
 #
 # Edit the config file for mgv-data to output to the standard MGI data location
-sed -i "s@^export DIR=.*@export DIR=\"${MGV_DATA_DROOT}\"@" "${MGV_DATA_DIR}/bin/config.sh"
+# A bit hackey. 
 sed -i "s@^export DIR=.*@export DIR=\"${MGV_DATA_DROOT}\"@" "${MGV_DATA_DIR}/bin/config.sh"
 
