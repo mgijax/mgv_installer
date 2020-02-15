@@ -7,7 +7,7 @@ cd `dirname $0`
 if [ ${NO_CLONE} != "true" ] ; then
     if [ ! -e "${MGV_DATA_DIR}" ] ; then
         # clone mgv-data
-        git clone git@github.com:mgijax/mgv-data.git "${MGV_DATA_DIR}"
+        git clone git@github.com:mgijax/mgv_data.git "${MGV_DATA_DIR}"
     fi
 
     if [ ! -e "${MGV_DIR}" ] ; then
@@ -19,6 +19,7 @@ fi
 # create the output areas for mgv-data if needed
 mkdir -p "${MGV_DATA_DROOT}/downloads"
 mkdir -p "${MGV_DATA_DROOT}/output"
+mkdir -p "${MGV_DATA_DROOT}/logs"
 
 # create soft link from live area to data output area
 rm -f "${MGV_DATA_LINK}"
