@@ -2,10 +2,14 @@
 
 if [ "${MGICONFIG}" = "" ]
 then
-    MGICONFIG=/usr/local/mgi/live/mgiconfig
-    export MGICONFIG
+    export MGICONFIG=/usr/local/mgi/live/mgiconfig
 fi
 . ${MGICONFIG}/master.config.sh
+
+# FIXME FIXME FIXME
+# Add to PATH so that node and npm are available.
+# Ought to install node globally and eliminate this line!
+export PATH="${PATH}:/home/jer/node/bin"
 
 # Parent directory where products are installed.
 # Change this for development.
@@ -14,18 +18,11 @@ export INSTALL_DIR="${MGI_LIVE}"
 # If "true", do not git clone the products. Assume they're already in place.
 export NO_CLONE="true"
 
-#---------------------------------------
-# mgv-data
-#
-# install dir
+# where mgv_data is installed 
 export MGV_DATA_DIR="${INSTALL_DIR}/mgv_data"
-# data area. has subdirs for downloads and output
-export MGV_DATA_DROOT="${DATALOADSOUTPUT}/mgi/mgv_data"
-# name of soft link to output directory.
-export MGV_DATA_LINK="${INSTALL_DIR}/mgv_web_data"
 
-#---------------------------------------
-# mgv parameters
-#
-# where it's installed
+# parent data directory. has subdirs for downloads and output
+export MGV_DATA_DROOT="${DATALOADSOUTPUT}/mgi/mgv_data"
+
+# where mgv is installed
 export MGV_DIR="${INSTALL_DIR}/mgv"

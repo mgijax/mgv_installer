@@ -3,16 +3,17 @@
 cd `dirname $0`
 . Configuration
 
-# clone the repos
+#----------------------------------------
+# mgv_data
+
 if [ ${NO_CLONE} != "true" ] ; then
     if [ ! -e "${MGV_DATA_DIR}" ] ; then
         # clone mgv-data
         git clone git@github.com:mgijax/mgv_data.git "${MGV_DATA_DIR}"
-    fi
-
-    if [ ! -e "${MGV_DIR}" ] ; then
-        # clone mgv
-        git clone git@github.com:mgijax/mgv.git "${MGV_DIR}"
+        pushd "${MGV_DATA_DIR}"
+        export MGV_DATA_TAG=`git describe --tags`
+        git checkout "${MGV_DATA_TAG}"
+        popd
     fi
 fi
 
@@ -21,13 +22,31 @@ mkdir -p "${MGV_DATA_DROOT}/downloads"
 mkdir -p "${MGV_DATA_DROOT}/output"
 mkdir -p "${MGV_DATA_DROOT}/logs"
 
-# create soft link from live area to data output area
-rm -f "${MGV_DATA_LINK}"
-ln -s "${MGV_DATA_DROOT}/output" "${MGV_DATA_LINK}"
-
 # Edit the config file for mgv-data to output to the standard MGI data location
 # A bit hackey. 
 sed -i "s@^export DIR=.*@export DIR=\"${MGV_DATA_DROOT}\"@" "${MGV_DATA_DIR}/bin/config.sh"
 
 # Run the deployment script to copy the cgi and make it executable
+# NOTE: must also run deploy.sh after each run of build.sh
 cd ${MGV_DATA_DIR}/bin; ./deploy.sh
+
+#----------------------------------------
+# mgv
+
+if [ ${NO_CLONE} != "true" ] ; then
+    if [ ! -e "${MGV_DIR}" ] ; then
+        # clone mgv
+        git clone git@github.com:mgijax/mgv.git "${MGV_DIR}"
+        pushd "${MGV_DIR}"
+        export MGV_TAG=`git describe --tag`
+        git checkout "${MGV_TAG}"
+        npm install
+        npm run build
+        # Set dataUrl parameter in the runtimeConfig.json file to "./mgv_web_data/"
+        # Note that the trailing slash is important.
+        sed -i 's@"dataUrl".*@"dataUrl" : "./mgv_web_data/",@' dist/runtimeConfig.json
+        rm -f dist/mgv_web_data
+        ln -s "${MGV_DATA_DROOT}/output" dist/mgv_web_data
+        popd
+    fi
+fi
