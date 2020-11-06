@@ -39,6 +39,7 @@ if [[ "${MGV_DATA_VER}" != "" ]]; then
     git checkout ${MGV_DATA_VER}
     sed -i "s@^export DDIR=.*@export DDIR=\"${MGV_DATA_DROOT}/downloads\"@" wrapperConfig.sh
     sed -i "s@^export ODIR=.*@export ODIR=\"${MGV_DATA_DROOT}/output\"@" wrapperConfig.sh
+    sed -i "s@^export PYTHON=.*@export PYTHON=\"${PYTHON}\"@" wrapperConfig.sh
 fi
 
 #----------------------------------------
