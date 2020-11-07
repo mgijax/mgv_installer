@@ -8,7 +8,7 @@ fi
 
 # Parent directory where products are installed.
 # Change this for development.
-export INSTALL_DIR="${MGI_LIVE}"
+export INSTALL_DIR=`realpath .`
 
 # where mgv_data is installed 
 export MGV_DATA_DIR="${INSTALL_DIR}/mgv_data"
