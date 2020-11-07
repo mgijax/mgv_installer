@@ -3,9 +3,12 @@
 # Install -m 6-0-16-2 -d 6-0-16-3
 #
 
-
 cd `dirname $0`
-. Configuration
+if [ ! -e Configuration ]; then
+  echo "No configuration file."
+  exit 1
+fi
+source Configuration
 
 until [ -z "$1" ]  # Until all parameters used up . . .
 do
