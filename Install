@@ -59,4 +59,6 @@ if [[ ${MGV_VER} != "" ]] ; then
     npm run build
     rm -f dist/mgv_web_data
     ln -s ${MGV_DATA_DROOT}/output dist/mgv_web_data
+    rm -f ${MGI_LIVE}/mgv
+    ln -s ${MGV_DIR}/dist ${MGI_LIVE}/mgv
 fi
