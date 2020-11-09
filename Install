@@ -1,6 +1,9 @@
 #!/bin/bash
 #
-# Install -m 6-0-16-2 -d 6-0-16-3
+# With no arguments, intalls the versions of mgv and mgv_data defined in Configuration.
+# You can override these settings on the command line with these args:
+#       -m VER   Specifies the version of mgv to install. VER is a branch or tag name
+#       -d VER   Specifies the version of mgv_data to install. VER is a branch or tag name
 #
 
 cd `dirname $0`
@@ -59,6 +62,6 @@ if [[ ${MGV_VER} != "" ]] ; then
     npm run build
     rm -f dist/mgv_web_data
     ln -s ${MGV_DATA_DROOT}/output dist/mgv_web_data
-    rm -f ${MGI_LIVE}/mgv
-    ln -s ${MGV_DIR}/dist ${MGI_LIVE}/mgv
+    rm -f ${MGV_SOFT_LINK}
+    ln -s ${MGV_DIR}/dist ${MGV_SOFT_LINK}
 fi
