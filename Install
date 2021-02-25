@@ -35,14 +35,20 @@ done
 
 #----------------------------------------
 # mgv_data
+#
+# To install, clone the repo, switch to the desired branch/tag, and update the wrapperConfig.
+#
 
 if [[ "${MGV_DATA_VER}" != "" ]]; then
     if [ ! -e ${MGV_DATA_DIR} ] ; then
         git clone git@github.com:mgijax/mgv_data.git ${MGV_DATA_DIR}
     fi
     cd ${MGV_DATA_DIR}
+    #
+    git checkout master
     git pull
     git checkout ${MGV_DATA_VER}
+    #
     sed -i "s@^export DDIR=.*@export DDIR=\"${MGV_DATA_DROOT}/downloads\"@" wrapperConfig.sh
     sed -i "s@^export ODIR=.*@export ODIR=\"${MGV_DATA_DROOT}/output\"@" wrapperConfig.sh
     sed -i "s@^export PYTHON=.*@export PYTHON=\"${PYTHON}\"@" wrapperConfig.sh
@@ -50,18 +56,29 @@ fi
 
 #----------------------------------------
 # mgv
+#
+# To build, clone the repo, switch to the specified branch/tag, then use npm
+# to install dependencies and build the web dist. Then create soft links to
+# (a) hook mgv up with the data from mgv_data and (b) set the top-level path to
+# the app.
+#
 
 if [[ ${MGV_VER} != "" ]] ; then
     if [ ! -e ${MGV_DIR} ] ; then
         git clone git@github.com:mgijax/mgv.git ${MGV_DIR}
     fi
     cd ${MGV_DIR}
+    #
+    git checkout master
     git pull
     git checkout ${MGV_VER}
+    #
     npm install
     npm run build
+    #
     rm -f dist/mgv_web_data
     ln -s ${MGV_DATA_DROOT}/output dist/mgv_web_data
+    #
     rm -f ${MGV_SOFT_LINK}
     ln -s ${MGV_DIR}/dist ${MGV_SOFT_LINK}
 fi

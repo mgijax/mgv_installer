@@ -6,6 +6,12 @@ then
 fi
 . ${MGICONFIG}/master.config.sh
 
+# Which mgv tag or branch name to install
+export MGV_VER=6-0-16-2
+
+# Which mgv_data tag or branch name to install
+export MGV_DATA_VER=6-0-16-2
+
 # Parent directory where mgv and mgv_data are installed.
 export INSTALL_DIR=`realpath .`
 
@@ -21,12 +27,6 @@ export MGV_DATA_DROOT="${DATALOADSOUTPUT}/mgi/mgv_data"
 
 # name of soft link to ${MGV_DATA_DROOT}/output directory.
 export MGV_DATA_LINK="${MGV_DIR}/mgv_web_data"
-
-# Which mgv tag or branch name to install
-export MGV_VER=6-0-16-1
-
-# Which mgv_data tag or branch name to install
-export MGV_DATA_VER=6-0-16-1
 
 # Name of the soft link created to mgv
 # Change this for dev installs.
