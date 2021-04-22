@@ -37,6 +37,7 @@ done
 # mgv_data
 #
 # To install, clone the repo, switch to the desired branch/tag, and update the wrapperConfig.
+# Also need to set the URL for downloading MGI.gff3.
 #
 
 if [[ "${MGV_DATA_VER}" != "" ]]; then
@@ -52,6 +53,8 @@ if [[ "${MGV_DATA_VER}" != "" ]]; then
     sed -i "s@^export DDIR=.*@export DDIR=\"${MGV_DATA_DROOT}/downloads\"@" wrapperConfig.sh
     sed -i "s@^export ODIR=.*@export ODIR=\"${MGV_DATA_DROOT}/output\"@" wrapperConfig.sh
     sed -i "s@^export PYTHON=.*@export PYTHON=\"${PYTHON}\"@" wrapperConfig.sh
+    # Set location of MGI.gff3 using FTPURL (from mgiconfig)
+    sed -i "s@http://www.informatics.jax.org/downloads/mgigff3/MGI.gff3.gz@${FTPURL}/downloads/mgigff3/MGI.gff3.gz@" buildConfig.json
 fi
 
 #----------------------------------------
