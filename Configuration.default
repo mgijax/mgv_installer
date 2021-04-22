@@ -7,7 +7,7 @@ fi
 . ${MGICONFIG}/master.config.sh
 
 # Which mgv tag or branch name to install
-export MGV_VER=6-0-16-7
+export MGV_VER=6-0-16-8
 
 # Which mgv_data tag or branch name to install
 export MGV_DATA_VER=6-0-16-6
