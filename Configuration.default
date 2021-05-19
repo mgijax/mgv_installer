@@ -7,10 +7,10 @@ fi
 . ${MGICONFIG}/master.config.sh
 
 # Which mgv tag or branch name to install
-export MGV_VER=6-0-17-1
+export MGV_VER=6-0-17-2
 
 # Which mgv_data tag or branch name to install
-export MGV_DATA_VER=6-0-17-1
+export MGV_DATA_VER=6-0-17-2
 
 # Parent directory where mgv and mgv_data are installed.
 export INSTALL_DIR=`realpath .`
