@@ -10,7 +10,7 @@ fi
 export MGV_VER=6-0-17-3
 
 # Which mgv_data tag or branch name to install
-export MGV_DATA_VER=6-0-17-3
+export MGV_DATA_VER=6-0-17-4
 
 # Parent directory where mgv and mgv_data are installed.
 export INSTALL_DIR=`realpath .`
