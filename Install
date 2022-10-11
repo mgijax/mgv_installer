@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# With no arguments, intalls the versions of mgv and mgv_data defined in Configuration.
+# With no arguments, installs the versions of mgv and mgv_data defined in Configuration.
 # You can override these settings on the command line with these args:
 #       -m VER   Specifies the version of mgv to install. VER is a branch or tag name
 #       -d VER   Specifies the version of mgv_data to install. VER is a branch or tag name
@@ -18,12 +18,14 @@ do
     case "$1" in
     -m) 
         shift
-        MGV_VER=$1
+        SPECIFIED_MGV_VER=true
+        CMDLINE_MGV_VER=$1
         nargs=$((nargs-2))
         ;;  
     -d) 
         shift
-        MGV_DATA_VER=$1
+        SPECIFIED_MGVDATA_VER=true
+        CMDLINE_MGVDATA_VER=$1
         nargs=$((nargs-2))
         ;;  
     *)
@@ -33,28 +35,49 @@ do
     shift
 done
 
+if [[ "${SPECIFIED_MGV_VER}" == "true" || "${SPECIFIED_MGVDATA_VER}" == "true" ]]; then
+    INSTALL_MGV=false
+    INSTALL_MGVDATA=false
+    if [[ "${SPECIFIED_MGV_VER}" != "" ]] ; then
+        INSTALL_MGV=true
+        export MGV_VER="${CMDLINE_MGV_VER}"
+    fi
+    if [[ "${SPECIFIED_MGVDATA_VER}" != "" ]] ; then
+        INSTALL_MGVDATA=true
+        export MGVDATA_VER="${CMDLINE_MGVDATA_VER}"
+    fi
+fi 
+
 #----------------------------------------
 # mgv_data
 #
 # To install, clone the repo, switch to the desired branch/tag, and update the wrapperConfig.
-# Also need to set the URL for downloading MGI.gff3.
+# Then compile the config to create the build script.
 #
 
-if [[ "${MGV_DATA_VER}" != "" ]]; then
-    if [ ! -e ${MGV_DATA_DIR} ] ; then
-        git clone git@github.com:mgijax/mgv_data.git ${MGV_DATA_DIR}
+if [[ "${INSTALL_MGVDATA}" == "true" ]]; then
+    echo "Installing mgv_data"
+    # remove current install if it exists
+    rm -fr ${MGVDATA_DIR}
+    # clone the repo and cd to it
+    git clone git@github.com:mgijax/mgv_data.git ${MGVDATA_DIR}
+    cd ${MGVDATA_DIR}
+    #
+    if [[ "${MGVDATA_VER}" == "" ]]; then
+        export MGVDATA_VER=`git describe --tags --abbrev=0`
     fi
-    cd ${MGV_DATA_DIR}
+    git checkout ${MGVDATA_VER}
     #
-    git checkout master
-    git pull
-    git checkout ${MGV_DATA_VER}
+    echo "Updating wrapperConfig.sh"
+    sed -i "s@^export OROOTDIR=.*@export OROOTDIR=\"${MGVDATA_DROOT}\"@" bin/wrapperConfig.sh
+    sed -i "s@^export TABIX=.*@export TABIX=\"${TABIX}\"@" bin/wrapperConfig.sh
+    sed -i "s@^export SAMTOOLS=.*@export SAMTOOLS=\"${SAMTOOLS}\"@" bin/wrapperConfig.sh
+    sed -i "s@^export BGZIP=.*@export BGZIP=\"$(dirname $SAMTOOLS)/bgzip\"@" bin/wrapperConfig.sh
+    sed -i "s@^export PYTHON=.*@export PYTHON=\"${PYTHON}\"@" bin/wrapperConfig.sh
+
     #
-    sed -i "s@^export DDIR=.*@export DDIR=\"${MGV_DATA_DROOT}/downloads\"@" wrapperConfig.sh
-    sed -i "s@^export ODIR=.*@export ODIR=\"${MGV_DATA_DROOT}/output\"@" wrapperConfig.sh
-    sed -i "s@^export PYTHON=.*@export PYTHON=\"${PYTHON}\"@" wrapperConfig.sh
-    # Set location of MGI.gff3 using FTPURL (from mgiconfig)
-    sed -i "s@http://www.informatics.jax.org/downloads/mgigff3/MGI.gff3.gz@${FTPURL}/mgigff3/MGI.gff3.gz@" buildConfig.json
+    echo "Compiling build config int build script"
+    bin/compileConfig.sh config.yaml build.sh
 fi
 
 #----------------------------------------
@@ -66,21 +89,27 @@ fi
 # the app.
 #
 
-if [[ ${MGV_VER} != "" ]] ; then
+if [[ ${INSTALL_MGV} == "true" ]] ; then
     if [ ! -e ${MGV_DIR} ] ; then
         git clone git@github.com:mgijax/mgv.git ${MGV_DIR}
     fi
     cd ${MGV_DIR}
     #
+    #
     git checkout master
-    git pull
+    git fetch --all
+
+    if [[ "${MGV_VER}" == "" ]]; then
+        export MGV_VER=`git describe --tags --abbrev=0`
+    fi
     git checkout ${MGV_VER}
     #
+
     npm install
     npm run build
     #
     rm -f dist/mgv_web_data
-    ln -s ${MGV_DATA_DROOT}/output dist/mgv_web_data
+    ln -s ${MGVDATA_DROOT}/output dist/mgv_web_data
     #
     rm -f ${MGV_SOFT_LINK}
     ln -s ${MGV_DIR}/dist ${MGV_SOFT_LINK}
