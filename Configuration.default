@@ -14,12 +14,12 @@ export INSTALL_MGVDATA=true
 
 # Which mgv tag or branch name to install.
 # Default is the latest tag on the master branch.
-# Can override on command line (-m branch_or_tag_name)
+# Can override on command line (Install -m branch_or_tag_name)
 export MGV_VER=""
 
 # Which mgv_data tag or branch name to install
 # Default is the latest tag on the master branch.
-# Can override on command line (-d branch_or_tag_name)
+# Can override on command line (Install -d branch_or_tag_name)
 export MGVDATA_VER=""
 
 # Parent directory where mgv and mgv_data are installed.
@@ -31,7 +31,7 @@ export MGVDATA_DIR="${INSTALL_DIR}/mgv_data"
 # where mgv product is installed
 export MGV_DIR="${INSTALL_DIR}/mgv"
 
-# Directory where data files live.
+# Directory where MGV data files go
 # Default = standard mgi directory for data loads
 # CHANGE THIS FOR DEV INSTALLS.
 export MGVDATA_DROOT="${DATALOADSOUTPUT}/mgi/mgv_data"

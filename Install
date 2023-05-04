@@ -76,7 +76,7 @@ if [[ "${INSTALL_MGVDATA}" == "true" ]]; then
     sed -i "s@^export PYTHON=.*@export PYTHON=\"${PYTHON}\"@" bin/wrapperConfig.sh
 
     #
-    echo "Compiling build config int build script"
+    echo "Compiling build config into build script"
     bin/compileConfig.sh config.yaml build.sh
 fi
 
@@ -90,6 +90,7 @@ fi
 #
 
 if [[ ${INSTALL_MGV} == "true" ]] ; then
+    echo "Installing mgv"
     if [ ! -e ${MGV_DIR} ] ; then
         git clone git@github.com:mgijax/mgv.git ${MGV_DIR}
     fi
