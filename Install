@@ -1,5 +1,8 @@
 #!/bin/bash
 #
+# The purpose of mgv_installer is to install both the MGV front end (mgv) and back end (mgv_data) 
+# so that they talk to each other and the mgv is accessible via URL at the right location.
+
 # With no arguments, installs the versions of mgv and mgv_data defined in Configuration.
 # You can override these settings on the command line with these args:
 #       -m VER   Specifies the version of mgv to install. VER is a branch or tag name
@@ -91,15 +94,10 @@ fi
 
 if [[ ${INSTALL_MGV} == "true" ]] ; then
     echo "Installing mgv"
-    if [ ! -e ${MGV_DIR} ] ; then
-        git clone git@github.com:mgijax/mgv.git ${MGV_DIR}
-    fi
+    rm -fr ${MGV_DIR}
+    git clone git@github.com:mgijax/mgv.git ${MGV_DIR}
     cd ${MGV_DIR}
     #
-    #
-    git checkout master
-    git fetch --all
-
     if [[ "${MGV_VER}" == "" ]]; then
         export MGV_VER=`git describe --tags --abbrev=0`
     fi
